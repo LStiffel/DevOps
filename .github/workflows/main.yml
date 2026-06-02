@@ -43,6 +43,7 @@ jobs:
   # define jobs to build and publish docker images
   build-and-push-docker-image-backend:
     needs: [test-backend, sonarcloud-scan]
+    if: github.ref == 'refs/heads/main'
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-24.04
 
@@ -68,6 +69,7 @@ jobs:
           push: ${{ github.ref == 'refs/heads/main' }}
 
   build-and-push-docker-image-database:
+    if: github.ref == 'refs/heads/main'
     # run at the start (doesnt depend on the tests)
     runs-on: ubuntu-24.04
 
@@ -90,6 +92,7 @@ jobs:
           push: ${{ github.ref == 'refs/heads/main' }}
 
   build-and-push-docker-image-httpd:
+    if: github.ref == 'refs/heads/main'
     # run at the start (doesnt depend on the tests)
     runs-on: ubuntu-24.04
 
