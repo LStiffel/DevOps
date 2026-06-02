@@ -38,11 +38,11 @@ jobs:
           cache: maven
 
 
-      - name: SonarCloud
+      - name: SonarCloud-Scan
         run: mvn -B verify sonar:sonar -Dsonar.projectKey=LStiffel_DevOps -Dsonar.organization=lstiffel -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file TP-01/backend/pom.xml
   # define job to build and publish docker image
   build-and-push-docker-image:
-    needs: test-backend
+    needs: [test-backend, sonarcloud-scan]
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-24.04
 
