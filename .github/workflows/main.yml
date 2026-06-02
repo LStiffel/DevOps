@@ -24,6 +24,20 @@ jobs:
       - name: Build and test with Maven
         run: mvn clean verify --file TP-01/backend/pom.xml
       
+  sonarcloud-scan:
+    needs: test-backend
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+
       - name: SonarCloud
         run: mvn -B verify sonar:sonar -Dsonar.projectKey=LStiffel_DevOps -Dsonar.organization=lstiffel -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file TP-01/backend/pom.xml
   # define job to build and publish docker image
