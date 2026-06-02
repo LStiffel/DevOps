@@ -2,7 +2,7 @@ name: CI devops 2025
 on:
   #to begin you want to launch this job in main and develop
   push:
-    branches: [main, develop]
+    branches: [main, develop] 
   pull_request:
 
 jobs:
@@ -43,6 +43,7 @@ jobs:
   # define jobs to build and publish docker images
   build-and-push-docker-image-backend:
     needs: [test-backend, sonarcloud-scan]
+    if: github.ref == 'refs/heads/main'
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-24.04
 
@@ -63,11 +64,12 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./TP-01/backend
           # Note: tags has to be all lower-case
-          tags:  ${{secrets.DOCKER_HUB_USERNAME}}/my-backend:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/my-backend:${{ github.sha }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
   build-and-push-docker-image-database:
+    if: github.ref == 'refs/heads/main'
     # run at the start (doesnt depend on the tests)
     runs-on: ubuntu-24.04
 
@@ -86,10 +88,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./TP-01/database
-          tags:  ${{secrets.DOCKER_HUB_USERNAME}}/my-database:latest
+          tags:  ${{secrets.DOCKER_HUB_USERNAME}}/my-database:${{ github.sha }}
           push: ${{ github.ref == 'refs/heads/main' }}
 
   build-and-push-docker-image-httpd:
+    if: github.ref == 'refs/heads/main'
     # run at the start (doesnt depend on the tests)
     runs-on: ubuntu-24.04
 
@@ -107,5 +110,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./TP-01/httpd
-          tags:  ${{secrets.DOCKER_HUB_USERNAME}}/my-httpd:latest
+          tags:  ${{secrets.DOCKER_HUB_USERNAME}}/my-httpd:${{ github.sha }}
           push: ${{ github.ref == 'refs/heads/main' }}
