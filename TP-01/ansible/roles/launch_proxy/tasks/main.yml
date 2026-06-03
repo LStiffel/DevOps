@@ -8,7 +8,7 @@
     force_kill: true    # <-- Force à recréer le conteneur si besoin
     restart_policy: unless-stopped
     env:
-      BACKEND_HOST: "my-backend-container"
+      BACKEND_HOST: "{{ BACKEND_HOST }}"
     ports:
       - "80:80"
     networks:

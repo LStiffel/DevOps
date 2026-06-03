@@ -13,7 +13,7 @@
       - name: proxy-network
     env:
       # Ton backend doit cibler "my-postgres" car c'est le nom du conteneur DB dans l'app-network
-      DB_HOST: "my-postgres" 
-      DB_USER: "usr"
-      DB_PASSWORD: "pwd"
-      DB_NAME: "db"
+      DB_HOST: "{{ DB_HOST }}"
+      DB_USER: "{{ DB_USER }}"
+      DB_PASSWORD: "{{ DB_PASSWORD }}"
+      DB_NAME: "{{ DB_NAME }}"

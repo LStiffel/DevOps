@@ -4,13 +4,22 @@
   docker_container:
     name: my-postgres
     image: lstiffel/my-database:latest
-    pull: true          # <-- Force Ansible à chercher la nouvelle image sur DockerHub
+    pull: true
     restart_policy: unless-stopped
     networks:
       - name: app-network
     env:
-      POSTGRES_USER: "usr"
-      POSTGRES_PASSWORD: "pwd"
-      POSTGRES_DB: "db"
+      POSTGRES_USER: "{{ POSTGRES_USER }}"
+      POSTGRES_PASSWORD: "{{ POSTGRES_PASSWORD }}"
+      POSTGRES_DB: "{{ POSTGRES_DB }}"
     volumes:
       - db_data:/var/lib/postgresql/data
+
+- name: Wait for PostgreSQL to be ready
+  community.docker.docker_container_exec:
+    container: my-postgres
+    command: pg_isready -U {{ POSTGRES_USER }} -d {{ POSTGRES_DB }}
+  register: pg_ready
+  until: pg_ready.rc == 0
+  retries: 10
+  delay: 3

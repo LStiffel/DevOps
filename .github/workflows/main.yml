@@ -115,3 +115,36 @@ jobs:
             ${{ secrets.DOCKER_HUB_USERNAME }}/my-httpd:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/my-httpd:${{ github.sha }}
           push: true
+  deploy-infrastructure:
+    needs: [build-and-push-docker-image-backend, build-and-push-docker-image-database, build-and-push-docker-image-httpd]
+    runs-on: ubuntu-24.04
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H leopold.stiffel.takima.school >> ~/.ssh/known_hosts
+
+      - name: Overwrite inventory with GitHub Secret
+        run: |
+          echo "${{ secrets.ANSIBLE_INVENTORY }}" > TP-01/ansible/inventories/setup.yml
+
+      - name: Create Vault Password File
+        run: |
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > TP-01/ansible/.vault_pass
+
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+
+      - name: Run Ansible Playbook
+        run: |
+          cd TP-01/ansible
+          ansible-playbook -i inventories/setup.yml playbook.yml

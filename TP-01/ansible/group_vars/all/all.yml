@@ -1,0 +1,15 @@
+# ansible/group_vars/all.yml
+---
+# PostgreSQL
+POSTGRES_DB: "{{ vault_postgres_db }}"
+POSTGRES_USER: "{{ vault_postgres_user }}"
+POSTGRES_PASSWORD: "{{ vault_postgres_password }}"
+
+# Spring Boot
+DB_NAME: "{{ vault_db_name }}"
+DB_USER: "{{ vault_db_user }}"
+DB_PASSWORD: "{{ vault_db_password }}"
+DB_HOST: "{{ vault_db_host }}"
+
+# Apache
+BACKEND_HOST: "{{ vault_backend_host }}"
