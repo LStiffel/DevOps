@@ -3,10 +3,12 @@
 - name: Launch Reverse Proxy
   docker_container:
     name: my-httpd
-    image: lstiffel/new-httpd:1.0
-    pull: true          # <-- Force Ansible à chercher la nouvelle image sur DockerHub
+    image: lstiffel/my-httpd:latest
+    pull: always          # <-- Force Ansible à chercher la nouvelle image sur DockerHub
     force_kill: true    # <-- Force à recréer le conteneur si besoin
     restart_policy: unless-stopped
+    env:
+      BACKEND_HOST: "my-backend-container"
     ports:
       - "80:80"
     networks:

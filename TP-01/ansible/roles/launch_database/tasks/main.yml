@@ -4,6 +4,7 @@
   docker_container:
     name: my-postgres
     image: lstiffel/my-database:latest
+    pull: true          # <-- Force Ansible à chercher la nouvelle image sur DockerHub
     restart_policy: unless-stopped
     networks:
       - name: app-network

@@ -1,9 +1,11 @@
 # roles/launch_app/tasks/main.yml
 ---
+
 - name: Launch Backend API
   docker_container:
     name: my-backend-container
     image: lstiffel/my-backend:latest
+    pull: true          # <-- Force Ansible à chercher la nouvelle image sur DockerHub
     restart_policy: on-failure
     restart_retries: 3
     networks:
@@ -14,3 +16,4 @@
       DB_HOST: "my-postgres" 
       DB_USER: "usr"
       DB_PASSWORD: "pwd"
+      DB_NAME: "db"
