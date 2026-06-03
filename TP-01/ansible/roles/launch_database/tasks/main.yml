@@ -3,7 +3,7 @@
 - name: Launch Database Container
   docker_container:
     name: my-postgres
-    image: postgres:15 # Ou ton image custom si tu l'as pushée : lstiffel/my-database:latest
+    image: lstiffel/my-database:latest
     restart_policy: unless-stopped
     networks:
       - name: app-network
