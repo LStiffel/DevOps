@@ -1,0 +1,16 @@
+# roles/launch_app/tasks/main.yml
+---
+- name: Launch Backend API
+  docker_container:
+    name: my-backend-container
+    image: lstiffel/my-backend:latest
+    restart_policy: on-failure
+    restart_retries: 3
+    networks:
+      - name: app-network
+      - name: proxy-network
+    env:
+      # Ton backend doit cibler "my-postgres" car c'est le nom du conteneur DB dans l'app-network
+      DB_HOST: "my-postgres" 
+      DB_USER: "usr"
+      DB_PASSWORD: "pwd"

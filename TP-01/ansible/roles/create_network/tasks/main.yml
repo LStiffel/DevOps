@@ -1,0 +1,9 @@
+# roles/create_network/tasks/main.yml
+---
+- name: Create App Network
+  docker_network:
+    name: app-network
+
+- name: Create Proxy Network
+  docker_network:
+    name: proxy-network

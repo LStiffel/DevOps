@@ -1,0 +1,15 @@
+# roles/launch_database/tasks/main.yml
+---
+- name: Launch Database Container
+  docker_container:
+    name: my-postgres
+    image: postgres:15 # Ou ton image custom si tu l'as pushée : lstiffel/my-database:latest
+    restart_policy: unless-stopped
+    networks:
+      - name: app-network
+    env:
+      POSTGRES_USER: "usr"
+      POSTGRES_PASSWORD: "pwd"
+      POSTGRES_DB: "db"
+    volumes:
+      - db_data:/var/lib/postgresql/data

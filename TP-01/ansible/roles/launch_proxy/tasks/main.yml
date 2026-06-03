@@ -1,0 +1,13 @@
+# roles/launch_proxy/tasks/main.yml
+---
+- name: Launch Reverse Proxy
+  docker_container:
+    name: my-httpd
+    image: lstiffel/my-httpd:latest
+    pull: true          # <-- Force Ansible à chercher la nouvelle image sur DockerHub
+    force_kill: true    # <-- Force à recréer le conteneur si besoin
+    restart_policy: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - name: proxy-network
