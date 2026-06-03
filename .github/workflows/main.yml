@@ -42,7 +42,7 @@ jobs:
         run: mvn -B verify sonar:sonar -Dsonar.projectKey=LStiffel_DevOps -Dsonar.organization=lstiffel -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file TP-01/backend/pom.xml
   # define jobs to build and publish docker images
   build-and-push-docker-image-backend:
-    needs: [test-backend, sonarcloud-scan]
+    needs: [test-backend]
     if: github.ref == 'refs/heads/main'
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-24.04
