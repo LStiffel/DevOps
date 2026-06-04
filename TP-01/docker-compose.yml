@@ -24,6 +24,13 @@ services:
       - app-network
       - proxy-network
 
+    frontend:
+    build: ./devops-front-main
+    container_name: my-frontend
+    restart: unless-stopped
+    networks:
+      - proxy-network
+
   httpd:
     build: ./httpd
     container_name: my-httpd
@@ -32,6 +39,7 @@ services:
       - "80:80"
     depends_on:
       - backend
+      - frontend
     env_file:
       - .env
     networks:

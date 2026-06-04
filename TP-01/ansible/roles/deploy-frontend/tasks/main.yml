@@ -1,0 +1,17 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for TP-01/ansible/roles/deploy-frontend
+- name: Pull frontend image
+  community.docker.docker_image:
+    name: "lstiffel/devops-front:latest"
+    source: pull
+    force_source: true
+
+- name: Run frontend container
+  community.docker.docker_container:
+    name: my-frontend
+    image: "lstiffel/devops-front:latest"
+    state: started
+    recreate: true
+    networks:
+      - name: proxy-network
